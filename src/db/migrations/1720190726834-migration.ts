@@ -1,13 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migration1720093509254 implements MigrationInterface {
-  name = "Migration1720093509254";
+export class Migration1720190726834 implements MigrationInterface {
+  name = "Migration1720190726834";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE TABLE "chat" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "content" text NOT NULL, "role" character varying(100) NOT NULL, "userChatID" uuid NOT NULL, CONSTRAINT "PK_9d0b2ba74336710fd31154738a5" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE TABLE "famousPerson" ("id" SERIAL NOT NULL, "name" character varying(256) NOT NULL, "description" character varying(256) NOT NULL, CONSTRAINT "PK_87889b64bd3aa3e6401e8880972" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE INDEX "famous_people_idx" ON "famousPerson" ("name") `);
-    await queryRunner.query(`CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "email" character varying(320) NOT NULL, "password" character varying(256) NOT NULL, "referralCode" character varying(60) NOT NULL, "questionLeft" integer NOT NULL, "subscribed" boolean NOT NULL, "nextPayment" TIMESTAMP NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "UQ_bf0e513b5cd8b4e937fa0702311" UNIQUE ("referralCode"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
+    await queryRunner.query(`CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "email" character varying(320) NOT NULL, "password" character varying(256) NOT NULL, "referralCode" character varying(60), "questionLeft" integer NOT NULL DEFAULT '5', "subscribed" boolean NOT NULL DEFAULT false, "nextPayment" TIMESTAMP, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "UQ_bf0e513b5cd8b4e937fa0702311" UNIQUE ("referralCode"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
     await queryRunner.query(`CREATE INDEX "user_email_idx" ON "user" ("email") `);
     await queryRunner.query(`CREATE INDEX "user_ref_idx" ON "user" ("referralCode") `);
     await queryRunner.query(`CREATE TABLE "userChat" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "famousPersonID" integer NOT NULL, "userID" uuid NOT NULL, "chatID" character varying NOT NULL, CONSTRAINT "REL_61dabf71a954c6637ae1d223a3" UNIQUE ("famousPersonID"), CONSTRAINT "PK_e55e6801e120b9747ea6729f024" PRIMARY KEY ("id"))`);
