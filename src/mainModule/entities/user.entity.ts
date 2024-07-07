@@ -16,6 +16,11 @@ export class UserEntity {
   password!: string;
 
   @Column({
+    type: "varchar", length: 256, nullable: true,
+  })
+  name!: string;
+
+  @Column({
     type: "varchar", length: 60, unique: true, nullable: true,
   })
   @Index("user_ref_idx")

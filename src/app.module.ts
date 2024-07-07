@@ -1,18 +1,17 @@
+import { EnvsVariables } from "@/core/env-constants";
 import { MainModule }    from "@/mainModule/main.module";
 import { Module }        from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import * as dotenv       from "dotenv";
 
-dotenv.config();
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type            : "postgres",
-      database        : process.env.DATABASE_NAME,
-      host            : process.env.DATABASE_HOST,
-      username        : process.env.DATABASE_USER,
-      password        : process.env.DATABASE_PASSWORD,
-      port            : process.env.DATABASE_PORT ? +process.env.DATABASE_PORT : 3300,
+      database        : EnvsVariables.DATABASE_NAME,
+      host            : EnvsVariables.DATABASE_HOST,
+      username        : EnvsVariables.DATABASE_USER,
+      password        : EnvsVariables.DATABASE_PASSWORD,
+      port            : EnvsVariables.DATABASE_PORT ? +EnvsVariables.DATABASE_PORT : 3300,
       schema          : "public",
       autoLoadEntities: true,
       synchronize     : false,

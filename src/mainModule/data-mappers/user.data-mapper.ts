@@ -4,7 +4,7 @@ import { Injectable }     from "@nestjs/common";
 
 @Injectable()
 export class UserDataMapper {
-  categoryToJWTPayload(entity: UserEntity): UserJWTPayload {
+  toJWTPayload(entity: UserEntity): UserJWTPayload {
     const { email, id, questionLeft, referralCode, subscribed } = entity;
 
     return {

@@ -28,3 +28,22 @@ export class UserSignUp extends GenericDto {
   @IsOptional()
   referralCode?: string;
 }
+
+export class UpdateUser extends GenericDto {
+  @Expose()
+  @IsEmail()
+  @IsOptional()
+  email?: string;
+
+  @Expose()
+  @IsString()
+  @MinLength(8)
+  @IsOptional()
+  password?: string;
+
+  @Expose()
+  @IsString()
+  @MinLength(3)
+  @IsOptional()
+  name?: string;
+}
