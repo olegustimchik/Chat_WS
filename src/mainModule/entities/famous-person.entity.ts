@@ -1,6 +1,5 @@
+import { UserChatEntity }                                                    from "@/mainModule/entities/user-chat.entity";
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToOne, Relation } from "typeorm";
-
-import { UserChatEntity }                                                    from "./userChat.entity";
 
 @Entity("famousPerson")
 export class FamousPersonEntity {

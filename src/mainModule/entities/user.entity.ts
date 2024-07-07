@@ -1,6 +1,5 @@
+import { UserChatEntity }                                                                       from "@/mainModule/entities/user-chat.entity";
 import { CreateDateColumn, Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, Relation } from "typeorm";
-
-import { UserChatEntity }                                                                       from "./userChat.entity";
 
 @Entity("user")
 export class UserEntity {
@@ -17,18 +16,23 @@ export class UserEntity {
   password!: string;
 
   @Column({
-    type: "varchar", length: 60, unique: true,
+    type: "varchar", length: 256, nullable: true,
+  })
+  name!: string;
+
+  @Column({
+    type: "varchar", length: 60, unique: true, nullable: true,
   })
   @Index("user_ref_idx")
   referralCode!: string;
 
-  @Column({ type: "int" })
+  @Column({ type: "int", default: 5 })
   questionLeft!: number;
 
-  @Column({ type: "boolean" })
+  @Column({ type: "boolean", default: false })
   subscribed!: boolean;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamp", default: null })
   nextPayment!: string;
 
   @CreateDateColumn()

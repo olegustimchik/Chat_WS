@@ -1,8 +1,7 @@
+import { ChatEntity }                                                                                          from "@/mainModule/entities/chat.entity";
+import { FamousPersonEntity }                                                                                  from "@/mainModule/entities/famous-person.entity";
+import { UserEntity }                                                                                          from "@/mainModule/entities/user.entity";
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, JoinColumn, ManyToOne, Relation, OneToOne } from "typeorm";
-
-import { ChatEntity }                                                                                          from "./chat.entity";
-import { FamousPersonEntity }                                                                                  from "./famousPerson.entity";
-import { UserEntity }                                                                                          from "./user.entity";
 
 @Entity("userChat")
 export class UserChatEntity {
