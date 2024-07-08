@@ -24,7 +24,7 @@ export class UserController {
     }
 
     if (referralCode) {
-      this.userService.updateQuestions(referralCode);
+      this.userService.updateQuestionsByReferral(referralCode);
     }
 
     const user = await this.userService.saveUser(email, password, EnvsVariables.PASSWORD_SALT);
