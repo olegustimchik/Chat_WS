@@ -40,7 +40,7 @@ export class UserService {
     return await this.userRepository.findOneBy({ referralCode: code });
   }
 
-  async updateQuestions(referralCode: string) : Promise<UserEntity> {
+  async updateQuestionsByReferral(referralCode: string) : Promise<UserEntity> {
     const isUser = await this.findUserByReferralCode(referralCode);
 
     if (isUser) {
