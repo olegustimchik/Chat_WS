@@ -16,4 +16,7 @@ export const EnvsVariables = {
   PASSWORD_SALT    : process.env.PASSWORD_SALT,
   SECRET           : process.env.SECRET,
   REFERRAL_SALT    : process.env.REFERRAL_SALT,
+
+  GOOGLE_CLIENT_ID    : process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 };

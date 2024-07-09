@@ -10,10 +10,12 @@ export class UserService {
   constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private hashService: HashService) { }
 
-  async saveUser(email: string, password: string, salt: string): Promise<UserEntity> {
+  async saveUser(email: string, password: string, salt: string, name: string = null): Promise<UserEntity> {
     const user = new UserEntity();
     user.email = email;
     user.password = this.hashService.hash(password, salt);
+    user.name = name;
+    user.passwordSalt = salt;
 
     return await this.userRepository.save(user);
   }
@@ -52,7 +54,13 @@ export class UserService {
     return null;
   }
 
-  async updateUser(user: UserEntity) {
+  async updateUser(user: UserEntity): Promise<UserEntity> {
     return await this.userRepository.save(user);
+  }
+
+  async saveGoogleAuthUser(email: string, externalID: string) {
+    return this.userRepository.save({
+      email, externalID, externalType: "GOOGLE",
+    });
   }
 }

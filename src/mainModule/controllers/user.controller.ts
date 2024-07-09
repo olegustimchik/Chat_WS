@@ -31,7 +31,7 @@ export class UserController {
 
     return res.status(HttpStatus.OK).json({
       message    : "user saved",
-      accessToken: this.authService.signIn(this.userDataMapper.toJWTPayload(user)),
+      accessToken: await this.authService.signIn(this.userDataMapper.toJWTPayload(user)),
     });
   }
 
@@ -44,7 +44,7 @@ export class UserController {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: "This email not registered" });
     }
 
-    if (!this.hashService.verify(password, user.password, EnvsVariables.PASSWORD_SALT)) {
+    if (!user.password || !this.hashService.verify(password, user.password, EnvsVariables.PASSWORD_SALT)) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: "password doesn't match" });
     }
 
