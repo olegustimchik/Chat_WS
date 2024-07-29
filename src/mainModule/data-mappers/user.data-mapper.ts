@@ -5,10 +5,8 @@ import { Injectable }     from "@nestjs/common";
 @Injectable()
 export class UserDataMapper {
   toJWTPayload(entity: UserEntity): UserJWTPayload {
-    const { email, id, questionLeft, referralCode, subscribed } = entity;
+    const { id } = entity;
 
-    return {
-      id, referralCode, email, questionLeft, subscribed,
-    };
+    return { id };
   }
 }

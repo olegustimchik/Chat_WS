@@ -1,9 +1,9 @@
-import { UserDataMapper }                         from "@/mainModule/data-mappers/user.data-mapper";
-import { AuthService }                            from "@/mainModule/services/auth.service";
-import { GoogleAuthService }                      from "@/mainModule/services/google.service";
-import { UserService }                            from "@/mainModule/services/user.service";
-import { Controller, Get, Body, HttpStatus, Res } from "@nestjs/common";
-import { Response }                               from "express";
+import { UserDataMapper }                                    from "@/mainModule/data-mappers/user.data-mapper";
+import { AuthService }                                       from "@/mainModule/services/auth.service";
+import { GoogleAuthService }                                 from "@/mainModule/services/google.service";
+import { UserService }                                       from "@/mainModule/services/user.service";
+import { Controller, Get, Body, HttpStatus, Res, Req, Post } from "@nestjs/common";
+import { Request, Response }                                 from "express";
 
 @Controller("google")
 export class GoogleAuthController {
@@ -12,14 +12,24 @@ export class GoogleAuthController {
     private authService: AuthService,
     private userDataMapper: UserDataMapper) { }
 
-  @Get("auth")
-  async googleAuth(@Body("token") token: string, @Res() res: Response) {
-    const payloads = (await this.googleService.verifyToken(token)).getPayload();
-    let user = await this.userService.findUserByEmail(payloads.email);
-    if (!user) {
-      user = await this.userService.saveGoogleAuthUser(payloads.email, payloads.sub);
-    }
+  @Post("auth")
+  async googleAuth(@Req() req: Request, @Res() res: Response) {
+    console.log(req.query);
+    console.log(req.body.code);
+    console.log(await this.googleService.getAccessToken(req.body.code));
+  }
 
-    return res.status(HttpStatus.OK).json({ message: "user loged", accessToken: await this.authService.signIn(this.userDataMapper.toJWTPayload(user)) });
+  @Get("callback")
+  async googleCallback(@Req() req: Request, @Res() res: Response) {
+    console.log("callback");
+    if (!req.query.token || typeof req.query.token !== "string") {
+      console.log(400);
+
+      return res.status(400).send();
+    }
+    console.log(3);
+    this.googleService.getAccessToken(req.query.token);
+
+    return res.status(200);
   }
 }
