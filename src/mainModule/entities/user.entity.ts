@@ -12,7 +12,9 @@ export class UserEntity {
   @Index("user_email_idx")
   email!: string;
 
-  @Column({ type: "varchar", length: 256 })
+  @Column({
+    type: "varchar", length: 256, default: null, nullable: true,
+  })
   password!: string;
 
   @Column({
@@ -34,6 +36,21 @@ export class UserEntity {
 
   @Column({ type: "timestamp", default: null })
   nextPayment!: string;
+
+  @Column({
+    type: "varchar", length: 256, default: null, nullable: true,
+  })
+  passwordSalt!: string;
+
+  @Column({
+    type: "varchar", length: 16, default: null, nullable: true,
+  })
+  externalType: string;
+
+  @Column({
+    type: "varchar", length: 256, default: null, nullable: true,
+  })
+  externalID: string;
 
   @CreateDateColumn()
   createdAt!: string;

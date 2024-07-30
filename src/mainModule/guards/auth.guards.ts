@@ -1,4 +1,3 @@
-import { EnvsVariables }                                                    from "@/core/env-constants";
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from "@nestjs/common";
 import { JwtService }                                                       from "@nestjs/jwt";
 import { Request }                                                          from "express";
@@ -17,7 +16,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token,
-        { secret: EnvsVariables.SECRET });
+        { secret: process.env.SECRET });
       request.body.user = payload;
     } catch {
       throw new UnauthorizedException();

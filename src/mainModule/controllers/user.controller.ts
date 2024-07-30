@@ -1,12 +1,11 @@
-import { EnvsVariables }                                                from "@/core/env-constants";
-import { UserDataMapper }                                               from "@/mainModule/data-mappers/user.data-mapper";
-import { UpdateUser, UserSignIn, UserSignUp }                           from "@/mainModule/dto/user.dto";
-import { AuthGuard }                                                    from "@/mainModule/guards/auth.guards";
-import { AuthService }                                                  from "@/mainModule/services/auth.service";
-import { HashService }                                                  from "@/mainModule/services/hash.service";
-import { UserService }                                                  from "@/mainModule/services/user.service";
-import { Controller, Post, Res, HttpStatus, Body, UseGuards, Req, Put } from "@nestjs/common";
-import { Request, Response }                                            from "express";
+import { UserDataMapper }                                                    from "@/mainModule/data-mappers/user.data-mapper";
+import { UpdateUser, UserSignIn, UserSignUp }                                from "@/mainModule/dto/user.dto";
+import { AuthGuard }                                                         from "@/mainModule/guards/auth.guards";
+import { AuthService }                                                       from "@/mainModule/services/auth.service";
+import { HashService }                                                       from "@/mainModule/services/hash.service";
+import { UserService }                                                       from "@/mainModule/services/user.service";
+import { Controller, Post, Res, HttpStatus, Body, UseGuards, Req, Put, Get } from "@nestjs/common";
+import { Request, Response }                                                 from "express";
 
 @Controller("user")
 export class UserController {
@@ -27,11 +26,11 @@ export class UserController {
       this.userService.updateQuestionsByReferral(referralCode);
     }
 
-    const user = await this.userService.saveUser(email, password, EnvsVariables.PASSWORD_SALT);
+    const user = await this.userService.saveUser(email, password, process.env.PASSWORD_SALT);
 
     return res.status(HttpStatus.OK).json({
       message    : "user saved",
-      accessToken: this.authService.signIn(this.userDataMapper.toJWTPayload(user)),
+      accessToken: await this.authService.signIn(this.userDataMapper.toJWTPayload(user)),
     });
   }
 
@@ -44,7 +43,7 @@ export class UserController {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: "This email not registered" });
     }
 
-    if (!this.hashService.verify(password, user.password, EnvsVariables.PASSWORD_SALT)) {
+    if (!user.password || !this.hashService.verify(password, user.password, process.env.PASSWORD_SALT)) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: "password doesn't match" });
     }
 
@@ -74,10 +73,23 @@ export class UserController {
     }
 
     if (password) {
-      userFromDB.password = this.hashService.hash(password, EnvsVariables.PASSWORD_SALT);
+      userFromDB.password = this.hashService.hash(password, process.env.PASSWORD_SALT);
     }
     userFromDB = await this.userService.updateUser(userFromDB);
 
     return res.json({ message: "The user successfully updated", accessToken: await this.authService.signIn(this.userDataMapper.toJWTPayload(userFromDB)) });
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("about")
+  async aboutUser(@Req() req: Request, @Body() body, @Res() res: Response) {
+    const { user } = req.body;
+    const userFromDB = await this.userService.findUserById(user.id);
+
+    if (!userFromDB) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: "This user not exists" });
+    }
+
+    return res.json({ message: "The user successfully updated", ...this.userDataMapper.toResponse(userFromDB) });
   }
 }
