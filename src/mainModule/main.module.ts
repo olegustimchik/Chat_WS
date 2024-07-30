@@ -1,4 +1,3 @@
-import { EnvsVariables }        from "@/core/env-constants";
 import { GoogleAuthController } from "@/mainModule/controllers/google-auth.controller";
 import { UserController }       from "@/mainModule/controllers/user.controller";
 import { UserDataMapper }       from "@/mainModule/data-mappers/user.data-mapper";
@@ -18,7 +17,7 @@ import { TypeOrmModule }        from "@nestjs/typeorm";
   imports: [
     JwtModule.register({
       global     : true,
-      secret     : EnvsVariables.SECRET,
+      secret     : process.env.SECRET,
       signOptions: { expiresIn: "1d" },
     }),
     TypeOrmModule.forFeature([UserChatEntity, UserEntity, ChatEntity, FamousPersonEntity]),

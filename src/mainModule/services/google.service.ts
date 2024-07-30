@@ -1,14 +1,13 @@
-import { EnvsVariables } from "@/core/env-constants";
-import { Injectable }    from "@nestjs/common";
-import { google, Auth }  from "googleapis";
+import { Injectable }   from "@nestjs/common";
+import { google, Auth } from "googleapis";
 
 @Injectable()
 export class GoogleAuthService {
   private client: Auth.OAuth2Client;
   constructor() {
     this.client = new google.auth.OAuth2({
-      clientId    : EnvsVariables.GOOGLE_CLIENT_ID,
-      clientSecret: EnvsVariables.GOOGLE_CLIENT_SECRET,
+      clientId    : process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       redirectUri : "postmessage",
     });
   }

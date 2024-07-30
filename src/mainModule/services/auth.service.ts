@@ -1,4 +1,4 @@
-import { UserJWTPayload } from "@/mainModule/interfaces/user";
+import { UserJWTPayload } from "@/mainModule/types/user";
 import { Injectable }     from "@nestjs/common";
 import { JwtService }     from "@nestjs/jwt";
 

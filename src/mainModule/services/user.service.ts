@@ -1,4 +1,3 @@
-import { EnvsVariables }    from "@/core/env-constants";
 import { UserEntity }       from "@/mainModule/entities/user.entity";
 import { HashService }      from "@/mainModule/services/hash.service";
 import { Injectable }       from "@nestjs/common";
@@ -25,7 +24,7 @@ export class UserService {
     if (!user) {
       throw new Error("This user not exists"); // create error class and handler for this case
     }
-    user.referralCode = this.hashService.hash(user.id, EnvsVariables.REFERRAL_SALT);
+    user.referralCode = this.hashService.hash(user.id, process.env.REFERRAL_SALT);
 
     return await this.userRepository.save(user);
   }
