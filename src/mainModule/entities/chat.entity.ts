@@ -9,8 +9,8 @@ export class ChatEntity {
   @Column({ type: "text" })
   content!: string;
 
-  @Column({ type: "varchar", length: 100 })
-  role!: string;
+  @Column({ type: "boolean" })
+  role!: boolean;
 
   @Column({ type: "varchar", nullable: false })
   userChatID!: string;

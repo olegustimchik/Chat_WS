@@ -1,6 +1,6 @@
 import { UserDataMapper }                                                    from "@/mainModule/data-mappers/user.data-mapper";
 import { UpdateUser, UserSignIn, UserSignUp }                                from "@/mainModule/dto/user.dto";
-import { AuthGuard }                                                         from "@/mainModule/guards/auth.guards";
+import { AuthGuard }                                                         from "@/mainModule/guards/auth.guard";
 import { AuthService }                                                       from "@/mainModule/services/auth.service";
 import { HashService }                                                       from "@/mainModule/services/hash.service";
 import { UserService }                                                       from "@/mainModule/services/user.service";
@@ -82,7 +82,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get("about")
-  async aboutUser(@Req() req: Request, @Body() body, @Res() res: Response) {
+  async aboutUser(@Req() req: Request, @Res() res: Response) {
     const { user } = req.body;
     const userFromDB = await this.userService.findUserById(user.id);
 
