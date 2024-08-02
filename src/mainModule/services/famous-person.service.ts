@@ -12,4 +12,8 @@ export class FamousPersonService {
 
     return famousPerson;
   }
+
+  async getAll(skip: number | undefined, take: number | undefined): Promise<Array<FamousPersonEntity>> {
+    return await this.famousPersonRepository.find({ skip, take });
+  }
 }

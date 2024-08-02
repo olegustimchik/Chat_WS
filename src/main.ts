@@ -1,15 +1,15 @@
 import "reflect-metadata";
-import { ValidationPipe } from "@nestjs/common";
-import { NestFactory }    from "@nestjs/core";
-import * as dotenv        from "dotenv";
-import { AppModule }      from "src/app.module";
+import { AllExceptionFilter } from "@/core/filters/all-exception.filter";
+import { ValidationPipe }     from "@nestjs/common";
+import { NestFactory }        from "@nestjs/core";
+import * as dotenv            from "dotenv";
+import { AppModule }          from "src/app.module";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  // app.useGlobalFilters(new AllExceptionFilter());
+  app.useGlobalFilters(new AllExceptionFilter());
   dotenv.config();
-  // app.use(bodyParser.json({ limit: "50mb" }));
-  // app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({

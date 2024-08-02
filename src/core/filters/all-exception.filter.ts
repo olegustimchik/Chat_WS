@@ -17,6 +17,16 @@ export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: (Error | HttpException | RpcException) & { statusCode?: number },
     host: ArgumentsHost): Observable<unknown> {
     const { headers, user } = this.getRequestFromContext(host);
+    if (exception.message === "jwt expired") {
+      this.logger.error({
+        headers, user, exception,
+      });
+
+      return  this.buildResponseFromContext(host, {
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message   : "User unauthorized",
+      });
+    }
 
     if (exception.message && exception.statusCode) {
       this.logger.error({
